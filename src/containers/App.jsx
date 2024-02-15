@@ -4,7 +4,7 @@ import { HomeScreen, Authentication } from "../pages"
 import { QueryClientProvider, QueryClient } from "react-query"
 import { ReactQueryDevtools } from "react-query/devtools"
 import "react-toastify/dist/ReactToastify.css"
-import { ToastContainer, toast } from "react-toastify"
+import { ToastContainer } from "react-toastify"
 
 const App = () => {
     const queryClient = new QueryClient()
