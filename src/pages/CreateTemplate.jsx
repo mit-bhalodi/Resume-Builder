@@ -24,7 +24,7 @@ const CreateTemplate = () => {
 
     const [selectedTags, setSelectedTags] = useState({})
 
-    const { data: templates, isError: templatesError, isLoading: templatesLoading, refetch: templatesRefetch } = useTemplates();
+    const { data: templates, isLoading: templatesLoading, refetch: templatesRefetch } = useTemplates();
 
     const { data: user, isLoading: userLoading } = useUser()
 

@@ -9,16 +9,23 @@ import { SlideUpAnimationMenu, FadeInOutWithOpacity } from "../animations/index"
 import { useQueryClient } from "react-query"
 import { auth } from "../config/firebase.config"
 import { adminIds } from "../utils/Helpers"
+import useFilters from "../hooks/useFilters"
 
 const Header = () => {
-    const { data, isLoading, isError } = useUser()
+    const { data, isLoading } = useUser()
     const [isMenu, setIsMenu] = useState(false)
     const queryClient = useQueryClient()
+
+    const { data: filterData } = useFilters()
 
     const signOutUser = async () => {
         await auth.signOut().then(() => {
             queryClient.setQueryData("user", null)
         })
+    }
+
+    const handleSearchTerm = (value) => {
+        queryClient.setQueryData("globalFilter", { ...queryClient.getQueryData("globalFilter"), searchTerm: value })
     }
 
     return (
@@ -37,7 +44,12 @@ const Header = () => {
                     type="text"
                     placeholder="Search here..."
                     className="flex-1 h-10 bg-transparent text-base font-semibold outline-none border-none"
+                    onChange={(e) => handleSearchTerm(e.target.value)}
+                    value={filterData?.searchTerm || ''}
                 />
+                {filterData?.searchTerm && <div className="w-8 h-8 flex items-center justify-center cursor-pointer bg-gray-200 hover:bg-gray-300 rounded-md" onClick={() => handleSearchTerm('')}>
+                    <p className="text-2xl text-black">x</p>
+                </div>}
             </div>
             <AnimatePresence>
                 {isLoading ? (
