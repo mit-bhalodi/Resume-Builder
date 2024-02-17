@@ -12,15 +12,15 @@ import { adminIds } from "../utils/Helpers"
 
 const Header = () => {
     const { data, isLoading, isError } = useUser()
-    const [isMenu, setIsMenu] =  useState(false)
+    const [isMenu, setIsMenu] = useState(false)
     const queryClient = useQueryClient()
-    
+
     const signOutUser = async () => {
         await auth.signOut().then(() => {
             queryClient.setQueryData("user", null)
         })
     }
-    
+
     return (
         <header className="w-screen flex items-center justify-center px-4 py-3 lg:px-8 border-b border-gray-300 bg-bgPrimary z-50 gap-12 sticky top-0">
             {/* Logo */}
@@ -54,10 +54,10 @@ const Header = () => {
                                         {data?.displayName && <p className="txt-txtDark txt-lg">{data?.displayName}</p>}
                                         <div className="w-full flex-col flex items-start gap-8 pt-6">
                                             <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={"/profile"}>My Account</Link>
-                                            
+
                                             {/* Add template / only admins */}
                                             {adminIds.includes(data?.uid) && <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={"/template/create"}>Add New Template</Link>}
-                                            
+
                                             {/* Sign out part */}
                                             <div className="w-full flex items-center justify-between gap-4 border-t border-gray-300 pt-4 group">
                                                 <p className="text-txtLight group-hover:text-txtDark cursor-pointer" onClick={signOutUser}>Sign Out</p>
