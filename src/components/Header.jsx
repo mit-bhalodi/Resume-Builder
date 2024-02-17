@@ -31,7 +31,21 @@ const Header = () => {
                 ) : (
                     <React.Fragment>
                         {data ? (
-                            <motion.div></motion.div>
+                            <motion.div className="relative">
+                                {data?.photoURL ? <div className="w-12 h-12 rounded-md relative flex items-center justify-center"><img src={data.photoURL} alt="user" className="w-full h-full object-cover rounded-md" /></div> : <div className="w-12 h-12 rounded-md relative flex items-center justify-center bg-blue-700 shadow-md cursor-pointer text-lg text-white">{data?.email[0]}</div>}
+                                {/* Dropdown */}
+                                <AnimatePresence>
+                                    <motion.div className="absolute px-4 py-3 flex flex-col bg-white rounded-md right-0 items-center justify-start gap-3 w-64 h-auto pt-12">
+                                        {data?.photoURL ? <div className="w-20 h-20 rounded-md relative flex flex-col items-center justify-center"><img src={data.photoURL} alt="user" className="w-full h-full object-cover rounded-full" /></div> : <div className="w-20 h-20 rounded-full relative flex items-center justify-center bg-blue-700 shadow-md cursor-pointer text-3xl text-white">{data?.email[0]}</div>}
+                                        {data?.displayName && <p className="txt-txtDark txt-lg">{data?.displayName}</p>}
+                                        <div className="w-full flex-col flex items-start gap-8 pt-6">
+                                            <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={"/profile"}>My Account</Link>
+                                            <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={"/template/create"}>Add New Template</Link>
+                                        </div>
+                                    </motion.div>
+                                </AnimatePresence>
+
+                            </motion.div>
                         ) : (
                             <Link to={"/auth"}>
                                 <motion.button>Login</motion.button>
