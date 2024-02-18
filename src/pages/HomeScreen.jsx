@@ -9,7 +9,7 @@ const HomeScreen = () => {
         <div className="w-screen flex flex-col items-center justify-center">
             {/* Header component */}
             <Header />
-            <main className="w-full">
+            <main className="w-full h-full">
                 <Suspense fallback={<MainSpinner />}>
                     <Routes>
                         <Route path="/" element={<HomeContainer />} />
@@ -20,6 +20,8 @@ const HomeScreen = () => {
                     </Routes>
                 </Suspense>
             </main>
+            <footer>
+            </footer>
         </div>
     )
 }

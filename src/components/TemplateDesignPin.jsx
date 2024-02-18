@@ -5,10 +5,14 @@ import { BiFolder, BiHeart, BiSolidFolderPlus, BiSolidHeartCircle } from "react-
 import { Tooltip } from 'react-tooltip';
 import useUser from '../hooks/useUser';
 import { saveToCollections, saveToFavourites } from '../api';
+import useTemplates from '../hooks/useTemplates';
+import { useNavigate } from 'react-router-dom';
 
 const TemplateDesignPin = ({ template, index }) => {
 
     const { data: user, refetch: userRefetch } = useUser()
+    const { refetch: temp_refetch } = useTemplates()
+    const navigate = useNavigate()
 
     const addToCollection = async (e) => {
         e.stopPropagation()
@@ -20,17 +24,22 @@ const TemplateDesignPin = ({ template, index }) => {
         e.stopPropagation()
         await saveToFavourites(user, template)
         userRefetch();
+        temp_refetch();
+    }
+
+    const handleRouteNavigation = () => {
+        navigate(`/resume-detail/${template._id}`, { replace: true })
     }
 
     return (
         <motion.div key={template?._id} {...ScaleInOut(index)} >
-            <div className='w-full h-[500px] 2xl:h-[740px] bg-gray-200 overflow-hidden relative flex justify-center items-center rounded-md'>
+            <div className='w-full h-[500px] 2xl:h-[740px] bg-gray-200 overflow-hidden relative flex justify-center items-center rounded-md group' onClick={handleRouteNavigation}>
                 <img src={template?.imageUrl} alt="Sample" className='f-full h-full object-cover hover:' />
                 <AnimatePresence>
-                    <motion.div {...FadeInOutWithOpacity} className='absolute inset-0 bg-[rgba(0,0,0,0.4)] flex flex-col justify-start items-center px-4 py-3 z-50 cursor-pointer'>
+                    <motion.div {...FadeInOutWithOpacity} className='absolute inset-0 bg-[rgba(0,0,0,0.4)] justify-start items-center px-4 py-3 z-50 cursor-pointer hidden group-hover:flex group-hover:flex-col'>
                         <div className='flex flex-col items-end justify-start w-full gap-6'>
                             <InnerBoxCard label={user?.collection?.includes(template?._id) ? "Remove from colleation" : "Add to collection"} Icon={user?.collection?.includes(template?._id) ? BiSolidFolderPlus : BiFolder} onHandle={addToCollection} />
-                            <InnerBoxCard label={user?.favourites?.includes(template?._id) ? "Remove from favourites" : "Add to favourites"} Icon={user?.favourites?.includes(template?._id) ? BiSolidHeartCircle : BiHeart} onHandle={addToFavs} />
+                            <InnerBoxCard label={template?.favourites?.includes(user?.uid) ? "Remove from favourites" : "Add to favourites"} Icon={template?.favourites?.includes(user?.uid) ? BiSolidHeartCircle : BiHeart} onHandle={addToFavs} />
                         </div>
                     </motion.div>
                 </AnimatePresence>

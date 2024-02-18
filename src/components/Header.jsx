@@ -8,7 +8,6 @@ import { HiLogout } from 'react-icons/hi'
 import { SlideUpAnimationMenu, FadeInOutWithOpacity } from "../animations/index"
 import { useQueryClient } from "react-query"
 import { auth } from "../config/firebase.config"
-import { adminIds } from "../utils/Helpers"
 import useFilters from "../hooks/useFilters"
 
 const Header = () => {
@@ -65,10 +64,10 @@ const Header = () => {
                                         {data?.photoURL ? <div className="w-20 h-20 rounded-md relative flex flex-col items-center justify-center"><img src={data.photoURL} alt="user" className="w-full h-full object-cover rounded-full" /></div> : <div className="w-20 h-20 rounded-full relative flex items-center justify-center bg-blue-700 shadow-md cursor-pointer text-3xl text-white">{data?.email[0]}</div>}
                                         {data?.displayName && <p className="txt-txtDark txt-lg">{data?.displayName}</p>}
                                         <div className="w-full flex-col flex items-start gap-8 pt-6">
-                                            <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={"/profile"}>My Account</Link>
+                                            <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={`/profile/${data?.uid}`}>My Account</Link>
 
                                             {/* Add template / only admins */}
-                                            {adminIds.includes(data?.uid) && <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={"/template/create"}>Add New Template</Link>}
+                                            {data?.is_admin && <Link className="text-txtLight hover:text-txtDark whitespace-nowrap" to={"/template/create"}>Add New Template</Link>}
 
                                             {/* Sign out part */}
                                             <div className="w-full flex items-center justify-between gap-4 border-t border-gray-300 pt-4 group">

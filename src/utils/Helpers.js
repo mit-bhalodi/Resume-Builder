@@ -1,4 +1,4 @@
-export const adminIds = ["106550623263635365366", "42618929"]
+import { Template1, Template2, Template3 } from "../components/designs";
 
 export const initialTags = [
     "Software Engineer",
@@ -52,4 +52,10 @@ export const FiltersData = [
         value: "healthcare_professional",
     },
     { id: "20", label: "Legal Counsel", value: "legal_counsel" },
+];
+
+export const TemplatesData = [
+    { id: `template-${Date.now()}`, name: "Template1", component: Template1 },
+    { id: `template-${Date.now()}`, name: "Template2", component: Template2 },
+    { id: `template-${Date.now()}`, name: "Template3", component: Template3 },
 ];

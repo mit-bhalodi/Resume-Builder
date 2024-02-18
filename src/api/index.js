@@ -59,14 +59,54 @@ export const saveToCollections = async (user, data) => {
 }
 
 export const saveToFavourites = async (user, data) => {
-    const docRef = doc(db, "users", user.uid)
-    if (!user?.favourites?.includes(data._id)) {
+    const docRef = doc(db, "templates", data._id)
+    if (!data?.favourites?.includes(user.uid)) {
         await updateDoc(docRef, {
-            favourites: arrayUnion(data._id)
+            favourites: arrayUnion(user?.uid)
         }).then(() => toast.success("Template added to favourites successfully")).catch((err) => toast.error(err.message || "Something went wrong"))
     } else {
         await updateDoc(docRef, {
-            favourites: arrayRemove(data._id)
+            favourites: arrayRemove(user?.uid)
         }).then(() => toast.success("Template removed from favourites")).catch((err) => toast.error(err.message || "Something went wrong"))
     }
+}
+
+export const getTemplateDetail = async (templateId) => {
+    return new Promise((resolve, reject) => {
+        const templateQuery = doc(db, 'templates', templateId)
+        const unsubscribe = onSnapshot(templateQuery, (doc) => {
+            resolve(doc.data())
+        })
+        return unsubscribe
+    })
+}
+
+export const getTemplateDetailEditByUser = (uid, id) => {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onSnapshot(
+            doc(db, "users", uid, "resumes", id),
+            (doc) => {
+                resolve(doc.data());
+            }
+        );
+
+        return unsubscribe;
+    });
+};
+
+export const getSavedResumes = (uid) => {
+    return new Promise((resolve, reject) => {
+        if (uid) {
+            const templateQuery = query(
+                collection(db, "users", uid, "resumes"),
+                orderBy("timeStamp", "desc")
+            )
+            const unsubscribe = onSnapshot(templateQuery, (_querySnapshot) => {
+                const resumes = _querySnapshot.docs.map((_doc) => _doc.data())
+                resolve(resumes)
+            })
+            return unsubscribe
+        }
+        reject("No user Id provided")
+    })
 }

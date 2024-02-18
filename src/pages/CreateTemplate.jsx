@@ -4,7 +4,7 @@ import { HashLoader } from "react-spinners"
 import { toast } from "react-toastify"
 import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from "firebase/storage"
 import { storage, db } from "../config/firebase.config"
-import { adminIds, initialTags } from "../utils/Helpers"
+import { initialTags } from "../utils/Helpers"
 import { doc, serverTimestamp, setDoc, deleteDoc } from "firebase/firestore"
 import useTemplates from "../hooks/useTemplates"
 import useUser from "../hooks/useUser"
@@ -109,7 +109,7 @@ const CreateTemplate = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!userLoading && !adminIds.includes(user.uid)) {
+        if (!userLoading && !user?.is_admin) {
             navigate("/", { replace: true })
         }
     }, [user, userLoading, navigate])
